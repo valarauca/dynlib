@@ -1,0 +1,8 @@
+[package]
+name = "dynlib"
+version = "0.1.0"
+authors = ["WLaeder"]
+
+[dependencies]
+winapi = "0.2.5"
+kernel32-sys = "0.2.2"

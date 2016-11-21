@@ -1,0 +1,10 @@
+[package]
+name = "test_ddll"
+version = "0.1.0"
+authors = ["WLaeder"]
+
+[lib]
+name = "test_dll"
+crate-type = ["dylib"]
+
+[dependencies]

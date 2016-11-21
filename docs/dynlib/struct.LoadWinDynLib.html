@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `LoadWinDynLib` struct in crate `dynlib`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, LoadWinDynLib">
+
+    <title>dynlib::LoadWinDynLib - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='index.html'>dynlib</a></p><script>window.sidebarCurrent = {name: 'LoadWinDynLib', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='index.html'>dynlib</a>::<wbr><a class='struct' href=''>LoadWinDynLib</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-13' class='srclink' href='../src/dynlib/src/lib.rs.html#49-51' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct LoadWinDynLib { /* fields omitted */ }</pre><div class='docblock'><p>Options for loading a Dynlib/Exe into windows.</p>
+
+<p>For full documentation see <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms684179(v=vs.85).aspx">The
+Docs</a>
+A cursory explaination is provided before each function.</p>
+</div><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../dynlib/struct.LoadWinDynLib.html' title='dynlib::LoadWinDynLib'>LoadWinDynLib</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-19' class='srclink' href='../src/dynlib/src/lib.rs.html#52-183' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.new' class='method'><span id='new.v' class='invisible'><code>fn <a href='#method.new' class='fnname'>new</a>() -&gt; Self</code></span></h4>
+<div class='docblock'><p>Create a new options value</p>
+</div><h4 id='method.ignore_code_authz_level' class='method'><span id='ignore_code_authz_level.v' class='invisible'><code>fn <a href='#method.ignore_code_authz_level' class='fnname'>ignore_code_authz_level</a>&lt;'a&gt;(&amp;'a mut self) -&gt; &amp;'a mut Self</code></span></h4>
+<div class='docblock'><p>Ignore Code Auth Levels</p>
+
+<p>This value tells the loader not to check App Locker or Software
+Software Restriction Polices for the DLL/EXE you are loading.</p>
+
+<p>If that DLL/EXE&#39;s dependencies DO have Code Auth Level restrictions you
+may will encounter an error</p>
+</div><h4 id='method.as_datafile' class='method'><span id='as_datafile.v' class='invisible'><code>fn <a href='#method.as_datafile' class='fnname'>as_datafile</a>&lt;'a&gt;(&amp;'a mut self) -&gt; &amp;'a mut Self</code></span></h4>
+<div class='docblock'><p>Library As Data File</p>
+
+<p>The library will be loaded into virtual memory. The memory will not be
+flagged as executable, so calling functions from the library will
+result in errors.</p>
+
+<p>This is used in conjuction with other flags/functions not for dynamic
+linking.</p>
+</div><h4 id='method.as_exclusive_datafile' class='method'><span id='as_exclusive_datafile.v' class='invisible'><code>fn <a href='#method.as_exclusive_datafile' class='fnname'>as_exclusive_datafile</a>&lt;'a&gt;(&amp;'a mut self) -&gt; &amp;'a mut Self</code></span></h4>
+<div class='docblock'><p>Library as Data File Exclusive</p>
+
+<p>Same as the above but this ensures you have WRITE permission to the
+virtual memory space the DLL/EXE is loaded into</p>
+</div><h4 id='method.as_image_resource' class='method'><span id='as_image_resource.v' class='invisible'><code>fn <a href='#method.as_image_resource' class='fnname'>as_image_resource</a>&lt;'a&gt;(&amp;'a mut self) -&gt; &amp;'a mut Self</code></span></h4>
+<div class='docblock'><p>Library as image resource</p>
+
+<p>Loads a DLL as a mapped file with read only access into memory. This
+will by-pass any and all startup routines the DLL may invoke.</p>
+</div><h4 id='method.search_application_dir' class='method'><span id='search_application_dir.v' class='invisible'><code>fn <a href='#method.search_application_dir' class='fnname'>search_application_dir</a>&lt;'a&gt;(&amp;'a mut self) -&gt; &amp;'a mut Self</code></span></h4>
+<div class='docblock'><p>Search Application Dir</p>
+
+<p>Allows the developer to not provide a path, but only a DLL name. The
+windows loader will search the local application directory for the 
+specified DLL name. </p>
+
+<p>No other directories will be searched.</p>
+</div><h4 id='method.search_default_dirs' class='method'><span id='search_default_dirs.v' class='invisible'><code>fn <a href='#method.search_default_dirs' class='fnname'>search_default_dirs</a>&lt;'a&gt;(&amp;'a mut self) -&gt; &amp;'a mut Self</code></span></h4>
+<div class='docblock'><p>Search Default Dirs</p>
+
+<p>Search ANYWHERE the DLL could be. Application Dir, System32, User Dir,
+AND environment path descripted loations.</p>
+</div><h4 id='method.search_dll_load_dir' class='method'><span id='search_dll_load_dir.v' class='invisible'><code>fn <a href='#method.search_dll_load_dir' class='fnname'>search_dll_load_dir</a>&lt;'a&gt;(&amp;'a mut self) -&gt; &amp;'a mut Self</code></span></h4>
+<div class='docblock'><p>Search DLL Load Dir</p>
+
+<p>This modifies the state of future searches. If you find a DLL with this
+flag then only the directory specified is searched. No others.</p>
+</div><h4 id='method.search_system32' class='method'><span id='search_system32.v' class='invisible'><code>fn <a href='#method.search_system32' class='fnname'>search_system32</a>&lt;'a&gt;(&amp;'a mut self) -&gt; &amp;'a mut Self</code></span></h4>
+<div class='docblock'><p>Search System32</p>
+
+<p>Search the %windows%\system32 directory for the DLL</p>
+</div><h4 id='method.search_user_dirs' class='method'><span id='search_user_dirs.v' class='invisible'><code>fn <a href='#method.search_user_dirs' class='fnname'>search_user_dirs</a>&lt;'a&gt;(&amp;'a mut self) -&gt; &amp;'a mut Self</code></span></h4>
+<div class='docblock'><p>Search user dirs</p>
+
+<p>Search directors that are added with <code>AddDllDirectory</code> or the
+<code>SetDllDirectory</code> functions. </p>
+</div><h4 id='method.altered_search_path' class='method'><span id='altered_search_path.v' class='invisible'><code>fn <a href='#method.altered_search_path' class='fnname'>altered_search_path</a>&lt;'a&gt;(&amp;'a mut self) -&gt; &amp;'a mut Self</code></span></h4>
+<div class='docblock'><p>Altered Search Path</p>
+
+<p>If you give me a full path I&#39;m going to ignore it. You cannot combine
+this with any other search flag.</p>
+</div><h4 id='method.load' class='method'><span id='load.v' class='invisible'><code>fn <a href='#method.load' class='fnname'>load</a>(&amp;self, path: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;<a class='struct' href='../dynlib/struct.DynLibWin.html' title='dynlib::DynLibWin'>DynLibWin</a>,&nbsp;<a class='struct' href='https://doc.rust-lang.org/nightly/std/io/error/struct.Error.html' title='std::io::error::Error'>Error</a>&gt;</code></span></h4>
+<div class='docblock'><p>Attempt the Load</p>
+
+<p>Give the system a path. This function will re-allocate the given
+string, and append a null terminator to the end.</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html' title='core::marker::Copy'>Copy</a> for <a class='struct' href='../dynlib/struct.LoadWinDynLib.html' title='dynlib::LoadWinDynLib'>LoadWinDynLib</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-15' class='srclink' href='../src/dynlib/src/lib.rs.html#48' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'></div><h3 class='impl'><span class='in-band'><code>impl <a class='trait' href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html' title='core::clone::Clone'>Clone</a> for <a class='struct' href='../dynlib/struct.LoadWinDynLib.html' title='dynlib::LoadWinDynLib'>LoadWinDynLib</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-16' class='srclink' href='../src/dynlib/src/lib.rs.html#48' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.clone' class='method'><span id='clone.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone' class='fnname'>clone</a>(&amp;self) -&gt; <a class='struct' href='../dynlib/struct.LoadWinDynLib.html' title='dynlib::LoadWinDynLib'>LoadWinDynLib</a></code></span></h4>
+<div class='docblock'><p>Returns a copy of the value. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#tymethod.clone">Read more</a></p>
+</div><h4 id='method.clone_from' class='method'><span id='clone_from.v' class='invisible'><code>fn <a href='https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from' class='fnname'>clone_from</a>(&amp;mut self, source: &amp;Self)</code><div class='since' title='Stable since Rust version 1.0.0'>1.0.0</div></span></h4>
+<div class='docblock'><p>Performs copy-assignment from <code>source</code>. <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html#method.clone_from">Read more</a></p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "dynlib";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script defer src="../search-index.js"></script>
+</body>
+</html>

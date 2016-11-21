@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["DynLibWin","DynLib"],["LoadWinDynLib","Options for loading a Dynlib/Exe into windows."]],"type":[["VoidPtr","An untyped pointer returned from an attempt to load a function. The develper will have to use `unsafe{ mem::transmute(VoidPtr)}` to recover the typing, and make this location executable."]]});
