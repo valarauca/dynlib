@@ -47,8 +47,32 @@
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-0' class='srclink' href='../src/dynlib/src/lib.rs.html#1-278' title='goto source code'>[src]</a></span></h1>
-<h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
+               </span><a id='src-0' class='srclink' href='../src/dynlib/src/lib.rs.html#15-307' title='goto source code'>[src]</a></span></h1>
+<div class='docblock'><p>DynLib</p>
+
+<p>Provides a relatively <em>safe</em> interface to interact with windows dll
+loading. This crate should only be used on windows platforms. If you
+attempt to use it on non-windows platform you will likely get a
+compiler error.</p>
+
+<p>The <em>entry point</em> to this crate is <code>LoadWinDynLib</code>. This allows the 
+developer to set configuration flags. There are some details contained
+within the type page. Most specifcally one should check which flags
+are and are not allowed. There is some compatibility issues between
+flags, as they&#39;ll modify <em>where</em> files are located.</p>
+
+<p>The loaded library does not have a built in drop flag. You are
+responsible for dropping your loaded DLL&#39;s. Generally speaking
+you have to be responsible for this. When the DLL is unloaded from
+memory the symbols/functions you have loaded are invalidated,
+attempts to call them will result in a memory fault, and likely
+process termination.</p>
+
+<p>An example project to generate a win dll <a href="https://github.com/valarauca/dynlib/examples">is
+here</a>]. A few cargo
+directives are required, as well you must ensure you are building with
+the <code>rust-msvc</code> compiler.</p>
+</div><h2 id='structs' class='section-header'><a href="#structs">Structs</a></h2>
 <table>
                        <tr class=' module-item'>
                            <td><a class='struct' href='struct.DynLibWin.html'
@@ -69,9 +93,7 @@
                            <td><a class='type' href='type.VoidPtr.html'
                                   title='dynlib::VoidPtr'>VoidPtr</a></td>
                            <td class='docblock-short'>
-                                <p>An untyped pointer returned from an attempt to load a function.
-The develper will have to use <code>unsafe{ mem::transmute(VoidPtr)}</code> to recover
-the typing, and make this location executable.</p>
+                                <p>Untyped Pointer to a Function.</p>
                            </td>
                        </tr></table></section>
     <section id='search' class="content hidden"></section>

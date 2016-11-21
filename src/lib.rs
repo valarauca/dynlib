@@ -12,30 +12,30 @@
 //implied. See the License for specific language governing permissions and
 //limitations under the License.
 
-///! DynLib
-///
-/// Provides a relatively _safe_ interface to interact with windows dll
-/// loading. This crate should only be used on windows platforms. If you
-/// attempt to use it on non-windows platform you will likely get a
-/// compiler error.
-///
-/// The _entry point_ to this crate is `LoadWinDynLib`. This allows the 
-/// developer to set configuration flags. There are some details contained
-/// within the type page. Most specifcally one should check which flags
-/// are and are not allowed. There is some compatibility issues between
-/// flags, as they'll modify _where_ files are located.
-///
-/// The loaded library does not have a built in drop flag. You are
-/// responsible for dropping your loaded DLL's. Generally speaking
-/// you have to be responsible for this. When the DLL is unloaded from
-/// memory the symbols/functions you have loaded are invalidated,
-/// attempts to call them will result in a memory fault, and likely
-/// process termination.
-///
-/// An example project to generate a win dll [is
-/// here](https://github.com/valarauca/dynlib/examples)]. A few cargo
-/// directives are required, as well you must ensure you are building with
-/// the `rust-msvc` compiler.
+//! DynLib
+//!
+//! Provides a relatively _safe_ interface to interact with windows dll
+//! loading. This crate should only be used on windows platforms. If you
+//! attempt to use it on non-windows platform you will likely get a
+//! compiler error.
+//!
+//! The _entry point_ to this crate is `LoadWinDynLib`. This allows the 
+//! developer to set configuration flags. There are some details contained
+//! within the type page. Most specifcally one should check which flags
+//! are and are not allowed. There is some compatibility issues between
+//! flags, as they'll modify _where_ files are located.
+//!
+//! The loaded library does not have a built in drop flag. You are
+//! responsible for dropping your loaded DLL's. Generally speaking
+//! you have to be responsible for this. When the DLL is unloaded from
+//! memory the symbols/functions you have loaded are invalidated,
+//! attempts to call them will result in a memory fault, and likely
+//! process termination.
+//!
+//! An example project to generate a win dll [is
+//! here](https://github.com/valarauca/dynlib/examples)]. A few cargo
+//! directives are required, as well you must ensure you are building with
+//! the `rust-msvc` compiler.
 
 
 extern crate winapi;
@@ -48,17 +48,22 @@ use kernel32::{LoadLibraryExA,GetProcAddress, FreeLibrary};
 use std::io::Error;
 use std::mem;
 
+///Untyped Pointer to a Function.
+///
 ///An untyped pointer returned from an attempt to load a function.
-///The develper will have to use `unsafe{ mem::transmute(VoidPtr)}` to recover
-///the typing, and make this location executable.
+///The developer will have to use `unsafe{ mem::transmute(VoidPtr)}`
+///to recover the typing, and make this location executable.
 pub type VoidPtr = *const c_void;
 
 
 ///Options for loading a Dynlib/Exe into windows.
 ///
+///This structure acts like the `OpenOptions` structure in StdLib. 
+///
 ///For full documentation see [The
 ///Docs](https://msdn.microsoft.com/en-us/library/windows/desktop/ms684179(v=vs.85).aspx)
-///A cursory explaination is provided before each function.
+///A cursory explaination is provided before each function. Each function
+///corresponds to one flag in the `LoadLibraryExA` interface. 
 #[derive(Copy,Clone)]
 pub struct LoadWinDynLib {
     x: u32,
@@ -78,7 +83,7 @@ impl LoadWinDynLib {
     ///Software Restriction Polices for the DLL/EXE you are loading.
     ///
     ///If that DLL/EXE's dependencies DO have Code Auth Level restrictions you
-    ///may will encounter an error
+    ///may will encounter an error.
     pub fn ignore_code_authz_level<'a>(&'a mut self) -> &'a mut Self {
         self.x |= 0x00000010u32;
         self
@@ -174,7 +179,17 @@ impl LoadWinDynLib {
     ///Attempt the Load
     ///
     ///Give the system a path. This function will re-allocate the given
-    ///string, and append a null terminator to the end.
+    ///string, to append a null terminator to the end. If you provide the
+    ///full ensure you use the proper path seperator I.E.: '\' not the unix
+    ///'/'. If you are not using rust's raw strings (str declartinon that
+    ///starts with `r"`). You will need to use the `\\` so the backslash
+    ///doesn't escape.
+    ///
+    ///#NOTE
+    ///
+    ///Only ASCII paths are supported. This is a limitation of the Rust
+    ///StdLib `OsString` type. Windows has both UTF-16 and ASCII-8 string
+    ///types.
     pub fn load(&self, path: &str)
     -> Result<DynLibWin,Error>
     {

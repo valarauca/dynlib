@@ -320,31 +320,74 @@
 <span id="276">276</span>
 <span id="277">277</span>
 <span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
 </pre><pre class='rust '>
-<span class='doccomment'>///! DynLib</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// Provides a relatively _safe_ interface to interact with windows dll</span>
-<span class='doccomment'>/// loading. This crate should only be used on windows platforms. If you</span>
-<span class='doccomment'>/// attempt to use it on non-windows platform you will likely get a</span>
-<span class='doccomment'>/// compiler error.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// The _entry point_ to this crate is `LoadWinDynLib`. This allows the </span>
-<span class='doccomment'>/// developer to set configuration flags. There are some details contained</span>
-<span class='doccomment'>/// within the type page. Most specifcally one should check which flags</span>
-<span class='doccomment'>/// are and are not allowed. There is some compatibility issues between</span>
-<span class='doccomment'>/// flags, as they&#39;ll modify _where_ files are located.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// The loaded library does not have a built in drop flag. You are</span>
-<span class='doccomment'>/// responsible for dropping your loaded DLL&#39;s. Generally speaking</span>
-<span class='doccomment'>/// you have to be responsible for this. When the DLL is unloaded from</span>
-<span class='doccomment'>/// memory the symbols/functions you have loaded are invalidated,</span>
-<span class='doccomment'>/// attempts to call them will result in a memory fault, and likely</span>
-<span class='doccomment'>/// process termination.</span>
-<span class='doccomment'>///</span>
-<span class='doccomment'>/// An example project to generate a win dll [is</span>
-<span class='doccomment'>/// here](https://github.com/valarauca/dynlib/examples)]. A few cargo</span>
-<span class='doccomment'>/// directives are required, as well you must ensure you are building with</span>
-<span class='doccomment'>/// the `rust-msvc` compiler.</span>
+<span class='comment'>//Copyright 2016 William Cody Laeder</span>
+<span class='comment'>//</span>
+<span class='comment'>//Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class='comment'>//You may not use this file execpt in compliance with the License.</span>
+<span class='comment'>//You may obtain a copy of the License at</span>
+<span class='comment'>//</span>
+<span class='comment'>//    http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class='comment'>//</span>
+<span class='comment'>//Uless required by applicable law or agreed to in writing, software</span>
+<span class='comment'>//distributed under the License is distrubuted on an &quot;AS IS&quot; BASIS,</span>
+<span class='comment'>//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or</span>
+<span class='comment'>//implied. See the License for specific language governing permissions and</span>
+<span class='comment'>//limitations under the License.</span>
+
+<span class='doccomment'>//! DynLib</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! Provides a relatively _safe_ interface to interact with windows dll</span>
+<span class='doccomment'>//! loading. This crate should only be used on windows platforms. If you</span>
+<span class='doccomment'>//! attempt to use it on non-windows platform you will likely get a</span>
+<span class='doccomment'>//! compiler error.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! The _entry point_ to this crate is `LoadWinDynLib`. This allows the </span>
+<span class='doccomment'>//! developer to set configuration flags. There are some details contained</span>
+<span class='doccomment'>//! within the type page. Most specifcally one should check which flags</span>
+<span class='doccomment'>//! are and are not allowed. There is some compatibility issues between</span>
+<span class='doccomment'>//! flags, as they&#39;ll modify _where_ files are located.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! The loaded library does not have a built in drop flag. You are</span>
+<span class='doccomment'>//! responsible for dropping your loaded DLL&#39;s. Generally speaking</span>
+<span class='doccomment'>//! you have to be responsible for this. When the DLL is unloaded from</span>
+<span class='doccomment'>//! memory the symbols/functions you have loaded are invalidated,</span>
+<span class='doccomment'>//! attempts to call them will result in a memory fault, and likely</span>
+<span class='doccomment'>//! process termination.</span>
+<span class='doccomment'>//!</span>
+<span class='doccomment'>//! An example project to generate a win dll [is</span>
+<span class='doccomment'>//! here](https://github.com/valarauca/dynlib/examples)]. A few cargo</span>
+<span class='doccomment'>//! directives are required, as well you must ensure you are building with</span>
+<span class='doccomment'>//! the `rust-msvc` compiler.</span>
 
 
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>winapi</span>;
@@ -357,17 +400,22 @@
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>io</span>::<span class='ident'>Error</span>;
 <span class='kw'>use</span> <span class='ident'>std</span>::<span class='ident'>mem</span>;
 
+<span class='doccomment'>///Untyped Pointer to a Function.</span>
+<span class='doccomment'>///</span>
 <span class='doccomment'>///An untyped pointer returned from an attempt to load a function.</span>
-<span class='doccomment'>///The develper will have to use `unsafe{ mem::transmute(VoidPtr)}` to recover</span>
-<span class='doccomment'>///the typing, and make this location executable.</span>
+<span class='doccomment'>///The developer will have to use `unsafe{ mem::transmute(VoidPtr)}`</span>
+<span class='doccomment'>///to recover the typing, and make this location executable.</span>
 <span class='kw'>pub</span> <span class='kw'>type</span> <span class='ident'>VoidPtr</span> <span class='op'>=</span> <span class='op'>*</span><span class='kw'>const</span> <span class='ident'>c_void</span>;
 
 
 <span class='doccomment'>///Options for loading a Dynlib/Exe into windows.</span>
 <span class='doccomment'>///</span>
+<span class='doccomment'>///This structure acts like the `OpenOptions` structure in StdLib. </span>
+<span class='doccomment'>///</span>
 <span class='doccomment'>///For full documentation see [The</span>
 <span class='doccomment'>///Docs](https://msdn.microsoft.com/en-us/library/windows/desktop/ms684179(v=vs.85).aspx)</span>
-<span class='doccomment'>///A cursory explaination is provided before each function.</span>
+<span class='doccomment'>///A cursory explaination is provided before each function. Each function</span>
+<span class='doccomment'>///corresponds to one flag in the `LoadLibraryExA` interface. </span>
 <span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Copy</span>,<span class='ident'>Clone</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>LoadWinDynLib</span> {
     <span class='ident'>x</span>: <span class='ident'>u32</span>,
@@ -387,7 +435,7 @@
     <span class='doccomment'>///Software Restriction Polices for the DLL/EXE you are loading.</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>///If that DLL/EXE&#39;s dependencies DO have Code Auth Level restrictions you</span>
-    <span class='doccomment'>///may will encounter an error</span>
+    <span class='doccomment'>///may will encounter an error.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>ignore_code_authz_level</span><span class='op'>&lt;</span><span class='lifetime'>&#39;a</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='kw-2'>mut</span> <span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='kw-2'>&amp;</span><span class='lifetime'>&#39;a</span> <span class='kw-2'>mut</span> <span class='self'>Self</span> {
         <span class='self'>self</span>.<span class='ident'>x</span> <span class='op'>|=</span> <span class='number'>0x00000010u32</span>;
         <span class='self'>self</span>
@@ -483,7 +531,17 @@
     <span class='doccomment'>///Attempt the Load</span>
     <span class='doccomment'>///</span>
     <span class='doccomment'>///Give the system a path. This function will re-allocate the given</span>
-    <span class='doccomment'>///string, and append a null terminator to the end.</span>
+    <span class='doccomment'>///string, to append a null terminator to the end. If you provide the</span>
+    <span class='doccomment'>///full ensure you use the proper path seperator I.E.: &#39;\&#39; not the unix</span>
+    <span class='doccomment'>///&#39;/&#39;. If you are not using rust&#39;s raw strings (str declartinon that</span>
+    <span class='doccomment'>///starts with `r&quot;`). You will need to use the `\\` so the backslash</span>
+    <span class='doccomment'>///doesn&#39;t escape.</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>///#NOTE</span>
+    <span class='doccomment'>///</span>
+    <span class='doccomment'>///Only ASCII paths are supported. This is a limitation of the Rust</span>
+    <span class='doccomment'>///StdLib `OsString` type. Windows has both UTF-16 and ASCII-8 string</span>
+    <span class='doccomment'>///types.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>load</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>, <span class='ident'>path</span>: <span class='kw-2'>&amp;</span><span class='ident'>str</span>)
     <span class='op'>-&gt;</span> <span class='prelude-ty'>Result</span><span class='op'>&lt;</span><span class='ident'>DynLibWin</span>,<span class='ident'>Error</span><span class='op'>&gt;</span>
     {
