@@ -1,7 +1,16 @@
 [package]
 name = "dynlib"
 version = "0.1.0"
-authors = ["WLaeder"]
+authors = ["William Cody Laeder <codylaeder@gmail.com>"]
+repository = "https://github.com/valarauca/dynlib"
+homepage = "https://github.com/valarauca/dynlib"
+license = "Apache-2.0"
+readme = "README.md"
+documentation = "https://valarauca.github.io/dynlib/dynlib/index.html"
+description = "High level, safe-ish binding for dll loading in Rust-MSVC"
+keywords = ["dll","dynamic","msvc","linking"]
+
+
 
 [dependencies]
 winapi = "0.2.5"
